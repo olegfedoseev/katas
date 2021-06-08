@@ -36,7 +36,7 @@ class Game {
         }
     }
 
-    private function isPlayable(): bool
+    public function isPlayable(): bool
     {
         return ($this->howManyPlayers() >= 2);
     }

@@ -1,15 +1,21 @@
 <?php
 namespace Game;
 
+use RuntimeException;
+
 class GameRunner
 {
-    public static function runGame(): void
+    public static function runGame(array $players): void
     {
         $aGame = new Game();
 
-        $aGame->add("Chet");
-        $aGame->add("Pat");
-        $aGame->add("Sue");
+        foreach ($players as $player) {
+            $aGame->add($player);
+        }
+
+        if (!$aGame->isPlayable()) {
+            throw new RuntimeException('Game is not playable');
+        }
 
         do {
             $aGame->roll(rand(0,5) + 1);
