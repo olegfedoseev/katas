@@ -158,14 +158,14 @@ class Game {
      */
     private function rollForPlayerInPenaltyBox(int $roll): void
     {
-        if ($roll % 2 !== 0) {
-            $this->isGettingOutOfPenaltyBox = true;
+        $currentPlayer = $this->players[$this->currentPlayer];
 
-            $this->say($this->players[$this->currentPlayer] . ' is getting out of the penalty box');
+        $this->isGettingOutOfPenaltyBox = $roll % 2 !== 0;
+        if ($this->isGettingOutOfPenaltyBox) {
+            $this->say($currentPlayer . ' is getting out of the penalty box');
             $this->performRoll($roll);
         } else {
-            $this->say($this->players[$this->currentPlayer] . ' is not getting out of the penalty box');
-            $this->isGettingOutOfPenaltyBox = false;
+            $this->say($currentPlayer . ' is not getting out of the penalty box');
         }
     }
 
@@ -174,9 +174,9 @@ class Game {
      */
     private function performRoll(int $roll): void
     {
-        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
+        $this->places[$this->currentPlayer] += $roll;
         if ($this->places[$this->currentPlayer] > 11) {
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+            $this->places[$this->currentPlayer] -= 12;
         }
 
         $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
@@ -196,8 +196,8 @@ class Game {
      */
     private function correctAnswer(): bool
     {
-        $this->say('Answer was correct!!!!');
         $this->purses[$this->currentPlayer]++;
+        $this->say('Answer was correct!!!!');
         $this->say($this->players[$this->currentPlayer] . ' now has ' . $this->purses[$this->currentPlayer] . ' Gold Coins.');
 
         $winner = $this->didPlayerWin();
