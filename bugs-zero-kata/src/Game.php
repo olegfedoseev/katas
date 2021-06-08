@@ -2,10 +2,6 @@
 
 namespace Game;
 
-function echoln($string) {
-  echo $string . PHP_EOL;
-}
-
 class Game {
     private array $players;
     private array $places;
@@ -57,8 +53,8 @@ class Game {
        $this->purses[$this->howManyPlayers()] = 0;
        $this->inPenaltyBox[$this->howManyPlayers()] = false;
 
-        echoln($playerName . ' was added');
-        echoln('They are player number ' . count($this->players));
+        $this->say($playerName . ' was added');
+        $this->say('They are player number ' . count($this->players));
         return true;
     }
 
@@ -69,24 +65,24 @@ class Game {
 
     public function roll(int $roll): void
     {
-        echoln($this->players[$this->currentPlayer] . ' is the current player');
-        echoln('They have rolled a ' . $roll);
+        $this->say($this->players[$this->currentPlayer] . ' is the current player');
+        $this->say('They have rolled a ' . $roll);
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($roll % 2 !== 0) {
                 $this->isGettingOutOfPenaltyBox = true;
 
-                echoln($this->players[$this->currentPlayer] . ' is getting out of the penalty box');
+                $this->say($this->players[$this->currentPlayer] . ' is getting out of the penalty box');
                 $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
                 if ($this->places[$this->currentPlayer] > 11) {
                     $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
                 }
 
-                echoln($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
-                echoln('The category is ' . $this->currentCategory());
+                $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
+                $this->say('The category is ' . $this->currentCategory());
                 $this->askQuestion();
             } else {
-                echoln($this->players[$this->currentPlayer] . ' is not getting out of the penalty box');
+                $this->say($this->players[$this->currentPlayer] . ' is not getting out of the penalty box');
                 $this->isGettingOutOfPenaltyBox = false;
             }
         } else {
@@ -95,8 +91,8 @@ class Game {
                 $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
             }
 
-            echoln($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
-            echoln('The category is ' . $this->currentCategory());
+            $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
+            $this->say('The category is ' . $this->currentCategory());
             $this->askQuestion();
         }
     }
@@ -104,13 +100,13 @@ class Game {
     public function askQuestion(): void
     {
         if ($this->currentCategory() === 'Pop')
-            echoln(array_shift($this->popQuestions));
+            $this->say(array_shift($this->popQuestions));
         if ($this->currentCategory() === 'Science')
-            echoln(array_shift($this->scienceQuestions));
+            $this->say(array_shift($this->scienceQuestions));
         if ($this->currentCategory() === 'Sports')
-            echoln(array_shift($this->sportsQuestions));
+            $this->say(array_shift($this->sportsQuestions));
         if ($this->currentCategory() === 'Rock')
-            echoln(array_shift($this->rockQuestions));
+            $this->say(array_shift($this->rockQuestions));
     }
 
     public function currentCategory(): string
@@ -131,9 +127,9 @@ class Game {
     {
         if ($this->inPenaltyBox[$this->currentPlayer]){
             if ($this->isGettingOutOfPenaltyBox) {
-                echoln('Answer was correct!!!!');
+                $this->say('Answer was correct!!!!');
                 $this->purses[$this->currentPlayer]++;
-                echoln($this->players[$this->currentPlayer]
+                $this->say($this->players[$this->currentPlayer]
                         . ' now has '
                         .$this->purses[$this->currentPlayer]
                         . ' Gold Coins.');
@@ -155,9 +151,9 @@ class Game {
             return true;
         }
 
-        echoln('Answer was corrent!!!!');
+        $this->say('Answer was corrent!!!!');
         $this->purses[$this->currentPlayer]++;
-        echoln($this->players[$this->currentPlayer] . ' now has ' .$this->purses[$this->currentPlayer] . ' Gold Coins.');
+        $this->say($this->players[$this->currentPlayer] . ' now has ' .$this->purses[$this->currentPlayer] . ' Gold Coins.');
 
         $winner = $this->didPlayerWin();
         $this->currentPlayer++;
@@ -170,8 +166,8 @@ class Game {
 
     public function wrongAnswer(): bool
     {
-        echoln('Question was incorrectly answered');
-        echoln($this->players[$this->currentPlayer] . ' was sent to the penalty box');
+        $this->say('Question was incorrectly answered');
+        $this->say($this->players[$this->currentPlayer] . ' was sent to the penalty box');
         $this->inPenaltyBox[$this->currentPlayer] = true;
 
         $this->currentPlayer++;
@@ -185,5 +181,10 @@ class Game {
     public function didPlayerWin(): bool
     {
         return $this->purses[$this->currentPlayer] !== 6;
+    }
+
+    private function say(string $string): void
+    {
+        echo $string . PHP_EOL;
     }
 }
