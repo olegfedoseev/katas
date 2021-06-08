@@ -5,20 +5,16 @@ use PHPUnit\Framework\TestCase;
 
 class GameTest extends TestCase
 {
-
-
-    public function testLockDownr()
+    public function testLockDown(): void
     {
-        srand(123455);
+        mt_srand(123455);
         ob_start();
 
         GameRunner::runGame();
 
-        $actual = ob_get_contents();
-        ob_end_clean();
+        $actual = ob_get_clean();
 
         $expected = file_get_contents('approved.txt');
         $this->assertEquals($expected, $actual);
-
     }
 }
