@@ -77,28 +77,44 @@ class Game {
 
     public function askQuestion(): void
     {
-        if ($this->currentCategory() === 'Pop')
-            $this->say(array_shift($this->popQuestions));
-        if ($this->currentCategory() === 'Science')
-            $this->say(array_shift($this->scienceQuestions));
-        if ($this->currentCategory() === 'Sports')
-            $this->say(array_shift($this->sportsQuestions));
-        if ($this->currentCategory() === 'Rock')
-            $this->say(array_shift($this->rockQuestions));
+        $category = $this->currentCategory();
+        $this->say('The category is ' . $category);
+
+        switch ($category) {
+            case 'Pop':
+                $question = array_shift($this->popQuestions);
+                break;
+            case 'Science':
+                $question = array_shift($this->scienceQuestions);
+                break;
+            case 'Sports':
+                $question = array_shift($this->sportsQuestions);
+                break;
+            case 'Rock':
+                $question = array_shift($this->rockQuestions);
+                break;
+        }
+
+        $this->say($question);
     }
 
     public function currentCategory(): string
     {
-        if ($this->places[$this->currentPlayer] === 0) return 'Pop';
-        if ($this->places[$this->currentPlayer] === 4) return 'Pop';
-        if ($this->places[$this->currentPlayer] === 8) return 'Pop';
-        if ($this->places[$this->currentPlayer] === 1) return 'Science';
-        if ($this->places[$this->currentPlayer] === 5) return 'Science';
-        if ($this->places[$this->currentPlayer] === 9) return 'Science';
-        if ($this->places[$this->currentPlayer] === 2) return 'Sports';
-        if ($this->places[$this->currentPlayer] === 6) return 'Sports';
-        if ($this->places[$this->currentPlayer] === 10) return 'Sports';
-        return 'Rock';
+        switch ($this->places[$this->currentPlayer]) {
+            case 0:
+            case 4:
+            case 8:
+                return 'Pop';
+            case 1:
+            case 5:
+            case 9:
+                return 'Science';
+            case 2:
+            case 6:
+                return 'Sports';
+            default:
+                return 'Rock';
+        }
     }
 
     public function wasCorrectlyAnswered(): bool
@@ -193,7 +209,6 @@ class Game {
         }
 
         $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
-        $this->say('The category is ' . $this->currentCategory());
         $this->askQuestion();
     }
 }
