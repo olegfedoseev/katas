@@ -32,16 +32,11 @@ class Game {
             $this->popQuestions[] = 'Pop Question ' . $i;
             $this->scienceQuestions[] = 'Science Question ' . $i;
             $this->sportsQuestions[] = 'Sports Question ' . $i;
-            $this->rockQuestions[] = $this->createRockQuestion($i);
+            $this->rockQuestions[] = 'Rock Question ' . $i;
         }
     }
 
-    public function createRockQuestion(int $index): string
-    {
-        return 'Rock Question ' . $index;
-    }
-
-    public function isPlayable(): bool
+    private function isPlayable(): bool
     {
         return ($this->howManyPlayers() >= 2);
     }
@@ -58,7 +53,7 @@ class Game {
         return true;
     }
 
-    public function howManyPlayers(): int
+    private function howManyPlayers(): int
     {
         return count($this->players);
     }
@@ -75,7 +70,7 @@ class Game {
         }
     }
 
-    public function askQuestion(): void
+    private function askQuestion(): void
     {
         $category = $this->currentCategory();
         $this->say('The category is ' . $category);
@@ -98,7 +93,7 @@ class Game {
         $this->say($question);
     }
 
-    public function currentCategory(): string
+    private function currentCategory(): string
     {
         switch ($this->places[$this->currentPlayer]) {
             case 0:
@@ -139,7 +134,7 @@ class Game {
         return true;
     }
 
-    public function didPlayerWin(): bool
+    private function didPlayerWin(): bool
     {
         return $this->purses[$this->currentPlayer] !== 6;
     }
