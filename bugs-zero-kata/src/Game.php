@@ -121,17 +121,7 @@ class Game {
     {
         if ($this->inPenaltyBox[$this->currentPlayer]){
             if ($this->isGettingOutOfPenaltyBox) {
-                $this->say('Answer was correct!!!!');
-                $this->purses[$this->currentPlayer]++;
-                $this->say($this->players[$this->currentPlayer]
-                        . ' now has '
-                        .$this->purses[$this->currentPlayer]
-                        . ' Gold Coins.');
-
-                $winner = $this->didPlayerWin();
-                $this->selectNextPlayer();
-
-                return $winner;
+                return $this->correctAnswer();
             }
 
             $this->selectNextPlayer();
@@ -139,14 +129,7 @@ class Game {
             return true;
         }
 
-        $this->say('Answer was corrent!!!!');
-        $this->purses[$this->currentPlayer]++;
-        $this->say($this->players[$this->currentPlayer] . ' now has ' .$this->purses[$this->currentPlayer] . ' Gold Coins.');
-
-        $winner = $this->didPlayerWin();
-        $this->selectNextPlayer();
-
-        return $winner;
+        return $this->correctAnswer();
     }
 
     public function wrongAnswer(): bool
@@ -206,5 +189,19 @@ class Game {
         if ($this->currentPlayer === count($this->players)) {
             $this->currentPlayer = 0;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function correctAnswer(): bool
+    {
+        $this->say('Answer was correct!!!!');
+        $this->purses[$this->currentPlayer]++;
+        $this->say($this->players[$this->currentPlayer] . ' now has ' . $this->purses[$this->currentPlayer] . ' Gold Coins.');
+
+        $winner = $this->didPlayerWin();
+        $this->selectNextPlayer();
+        return $winner;
     }
 }
