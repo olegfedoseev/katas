@@ -119,17 +119,17 @@ class Game {
 
     public function wasCorrectlyAnswered(): bool
     {
-        if ($this->inPenaltyBox[$this->currentPlayer]){
-            if ($this->isGettingOutOfPenaltyBox) {
-                return $this->correctAnswer();
-            }
-
-            $this->selectNextPlayer();
-
-            return true;
+        if (!$this->inPenaltyBox[$this->currentPlayer]) {
+            return $this->correctAnswer();
         }
 
-        return $this->correctAnswer();
+        if ($this->isGettingOutOfPenaltyBox) {
+            return $this->correctAnswer();
+        }
+
+        $this->selectNextPlayer();
+
+        return true;
     }
 
     public function wrongAnswer(): bool
