@@ -69,31 +69,9 @@ class Game {
         $this->say('They have rolled a ' . $roll);
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($roll % 2 !== 0) {
-                $this->isGettingOutOfPenaltyBox = true;
-
-                $this->say($this->players[$this->currentPlayer] . ' is getting out of the penalty box');
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-                if ($this->places[$this->currentPlayer] > 11) {
-                    $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
-                }
-
-                $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
-                $this->say('The category is ' . $this->currentCategory());
-                $this->askQuestion();
-            } else {
-                $this->say($this->players[$this->currentPlayer] . ' is not getting out of the penalty box');
-                $this->isGettingOutOfPenaltyBox = false;
-            }
+            $this->rollForPlayerInPenaltyBox($roll);
         } else {
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-            if ($this->places[$this->currentPlayer] > 11) {
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
-            }
-
-            $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
-            $this->say('The category is ' . $this->currentCategory());
-            $this->askQuestion();
+            $this->performRoll($roll);
         }
     }
 
@@ -186,5 +164,36 @@ class Game {
     private function say(string $string): void
     {
         echo $string . PHP_EOL;
+    }
+
+    /**
+     * @param int $roll
+     */
+    private function rollForPlayerInPenaltyBox(int $roll): void
+    {
+        if ($roll % 2 !== 0) {
+            $this->isGettingOutOfPenaltyBox = true;
+
+            $this->say($this->players[$this->currentPlayer] . ' is getting out of the penalty box');
+            $this->performRoll($roll);
+        } else {
+            $this->say($this->players[$this->currentPlayer] . ' is not getting out of the penalty box');
+            $this->isGettingOutOfPenaltyBox = false;
+        }
+    }
+
+    /**
+     * @param int $roll
+     */
+    private function performRoll(int $roll): void
+    {
+        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
+        if ($this->places[$this->currentPlayer] > 11) {
+            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+        }
+
+        $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
+        $this->say('The category is ' . $this->currentCategory());
+        $this->askQuestion();
     }
 }
