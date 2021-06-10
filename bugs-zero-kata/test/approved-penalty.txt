@@ -27,8 +27,6 @@ Player 1 now has 1 Gold Coins.
 Player 2 is the current player
 They have rolled a 2
 Player 2 is not getting out of the penalty box
-Question was incorrectly answered
-Player 2 was sent to the penalty box
 Player 1 is the current player
 They have rolled a 2
 Player 1's new location is 6

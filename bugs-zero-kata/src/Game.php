@@ -70,17 +70,6 @@ class Game {
         }
     }
 
-    public function checkAnswer(int $answer): bool
-    {
-        if ($answer === 7) {
-            $notAWinner = $this->wrongAnswer();
-        } else {
-            $notAWinner = $this->wasCorrectlyAnswered();
-        }
-
-        return !$notAWinner;
-    }
-
     private function askQuestion(): void
     {
         $category = $this->currentCategory();
@@ -123,31 +112,47 @@ class Game {
         }
     }
 
-    private function wasCorrectlyAnswered(): bool
+    public function checkAnswer(int $answer): bool
     {
-        if ($this->canPlayerAnswerQuestion()) {
-            return $this->isCorrectAnswer();
+        if (!$this->canPlayerAnswerQuestion()) {
+            $this->selectNextPlayer();
+
+            return false;
+        }
+
+        $winner = false;
+        if ($this->isCorrectAnswer($answer)) {
+            $this->purses[$this->currentPlayer]++;
+            $this->inPenaltyBox[$this->currentPlayer] = false;
+
+            $this->say('Answer was correct!!!!');
+            $this->say($this->players[$this->currentPlayer] . ' now has ' . $this->purses[$this->currentPlayer] . ' Gold Coins.');
+
+            $winner = $this->didPlayerWin();
+        } else {
+            $this->inPenaltyBox[$this->currentPlayer] = true;
+
+            $this->say('Question was incorrectly answered');
+            $this->say($this->players[$this->currentPlayer] . ' was sent to the penalty box');
         }
 
         $this->selectNextPlayer();
 
-        return true;
-    }
-
-    private function wrongAnswer(): bool
-    {
-        $this->say('Question was incorrectly answered');
-        $this->say($this->players[$this->currentPlayer] . ' was sent to the penalty box');
-        $this->inPenaltyBox[$this->currentPlayer] = true;
-
-        $this->selectNextPlayer();
-
-        return true;
+        return $winner;
     }
 
     private function didPlayerWin(): bool
     {
-        return $this->purses[$this->currentPlayer] !== 6;
+        return $this->purses[$this->currentPlayer] === 6;
+    }
+
+    /**
+     * @param int $answer
+     * @return bool
+     */
+    private function isCorrectAnswer(int $answer): bool
+    {
+        return $answer !== 7;
     }
 
     private function say(string $string): void
@@ -191,22 +196,6 @@ class Game {
         if ($this->currentPlayer === count($this->players)) {
             $this->currentPlayer = 0;
         }
-    }
-
-    /**
-     * @return bool
-     */
-    private function isCorrectAnswer(): bool
-    {
-        $this->purses[$this->currentPlayer]++;
-        $this->inPenaltyBox[$this->currentPlayer] = false;
-
-        $this->say('Answer was correct!!!!');
-        $this->say($this->players[$this->currentPlayer] . ' now has ' . $this->purses[$this->currentPlayer] . ' Gold Coins.');
-
-        $winner = $this->didPlayerWin();
-        $this->selectNextPlayer();
-        return $winner;
     }
 
     /**
