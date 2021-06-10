@@ -70,6 +70,17 @@ class Game {
         }
     }
 
+    public function checkAnswer(int $answer): bool
+    {
+        if ($answer === 7) {
+            $notAWinner = $this->wrongAnswer();
+        } else {
+            $notAWinner = $this->wasCorrectlyAnswered();
+        }
+
+        return !$notAWinner;
+    }
+
     private function askQuestion(): void
     {
         $category = $this->currentCategory();
@@ -112,7 +123,7 @@ class Game {
         }
     }
 
-    public function wasCorrectlyAnswered(): bool
+    private function wasCorrectlyAnswered(): bool
     {
         if ($this->canPlayerAnswerQuestion()) {
             return $this->isCorrectAnswer();
@@ -123,7 +134,7 @@ class Game {
         return true;
     }
 
-    public function wrongAnswer(): bool
+    private function wrongAnswer(): bool
     {
         $this->say('Question was incorrectly answered');
         $this->say($this->players[$this->currentPlayer] . ' was sent to the penalty box');
@@ -188,6 +199,8 @@ class Game {
     private function isCorrectAnswer(): bool
     {
         $this->purses[$this->currentPlayer]++;
+        $this->inPenaltyBox[$this->currentPlayer] = false;
+
         $this->say('Answer was correct!!!!');
         $this->say($this->players[$this->currentPlayer] . ' now has ' . $this->purses[$this->currentPlayer] . ' Gold Coins.');
 

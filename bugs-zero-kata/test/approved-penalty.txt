@@ -1,0 +1,41 @@
+Player 1 was added
+They are player number 1
+Player 2 was added
+They are player number 2
+Player 1 is the current player
+They have rolled a 1
+Player 1's new location is 1
+The category is Science
+Science Question 0
+Question was incorrectly answered
+Player 1 was sent to the penalty box
+Player 2 is the current player
+They have rolled a 1
+Player 2's new location is 1
+The category is Science
+Science Question 1
+Question was incorrectly answered
+Player 2 was sent to the penalty box
+Player 1 is the current player
+They have rolled a 3
+Player 1 is getting out of the penalty box
+Player 1's new location is 4
+The category is Pop
+Pop Question 0
+Answer was correct!!!!
+Player 1 now has 1 Gold Coins.
+Player 2 is the current player
+They have rolled a 2
+Player 2 is not getting out of the penalty box
+Question was incorrectly answered
+Player 2 was sent to the penalty box
+Player 1 is the current player
+They have rolled a 2
+Player 1's new location is 6
+The category is Sports
+Sports Question 0
+Answer was correct!!!!
+Player 1 now has 2 Gold Coins.
+Player 2 is the current player
+They have rolled a 2
+Player 2 is not getting out of the penalty box
