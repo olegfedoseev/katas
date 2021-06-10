@@ -65,9 +65,19 @@ class Game {
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             $this->rollForPlayerInPenaltyBox($roll);
-        } else {
-            $this->performRoll($roll);
         }
+
+        if (!$this->canPlayerAnswerQuestion()) {
+            return;
+        }
+
+        $this->places[$this->currentPlayer] += $roll;
+        if ($this->places[$this->currentPlayer] > 11) {
+            $this->places[$this->currentPlayer] -= 12;
+        }
+
+        $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
+        $this->askQuestion();
     }
 
     private function askQuestion(): void
@@ -170,24 +180,9 @@ class Game {
         $this->isGettingOutOfPenaltyBox = $roll % 2 !== 0;
         if ($this->isGettingOutOfPenaltyBox) {
             $this->say($currentPlayer . ' is getting out of the penalty box');
-            $this->performRoll($roll);
         } else {
             $this->say($currentPlayer . ' is not getting out of the penalty box');
         }
-    }
-
-    /**
-     * @param int $roll
-     */
-    private function performRoll(int $roll): void
-    {
-        $this->places[$this->currentPlayer] += $roll;
-        if ($this->places[$this->currentPlayer] > 11) {
-            $this->places[$this->currentPlayer] -= 12;
-        }
-
-        $this->say($this->players[$this->currentPlayer] . '\'s new location is ' . $this->places[$this->currentPlayer]);
-        $this->askQuestion();
     }
 
     private function selectNextPlayer(): void
