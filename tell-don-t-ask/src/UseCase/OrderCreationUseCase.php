@@ -48,7 +48,7 @@ class OrderCreationUseCase
         foreach ($itemsRequest as $itemRequest) {
             $product = $this->productCatalog->getByName($itemRequest->getProductName());
 
-            if (empty($product)) {
+            if ($product === null) {
                 throw new UnknownProductException();
             } else {
                 $unitaryTax = round(

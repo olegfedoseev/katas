@@ -8,20 +8,16 @@ namespace Archel\TellDontAsk\Domain;
  */
 class Product
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+    private float $price;
+    private Category $category;
 
-    /**
-     * @var float
-     */
-    private $price;
-
-    /**
-     * @var Category
-     */
-    private $category;
+    public function __construct(string $name, float $price, Category $category)
+    {
+        $this->name = $name;
+        $this->price = $price;
+        $this->category = $category;
+    }
 
     /**
      * @return string
@@ -29,14 +25,6 @@ class Product
     public function getName() : string
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name) : void
-    {
-        $this->name = $name;
     }
 
     /**
@@ -48,14 +36,6 @@ class Product
     }
 
     /**
-     * @param float $price
-     */
-    public function setPrice(float $price) : void
-    {
-        $this->price = $price;
-    }
-
-    /**
      * @return Category
      */
     public function getCategory() : Category
@@ -63,11 +43,11 @@ class Product
         return $this->category;
     }
 
-    /**
-     * @param Category $category
-     */
-    public function setCategory(Category $category) : void
+    public function getUnitaryTax(): float
     {
-        $this->category = $category;
+        return round(
+            ($this->getPrice() / 100) * $this->getCategory()->getTaxPercentage(),
+            2
+        );
     }
 }

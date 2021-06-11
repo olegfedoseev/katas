@@ -3,7 +3,6 @@
 namespace Archel\TellDontAskTest\UseCase;
 
 use Archel\TellDontAsk\Domain\Category;
-use Archel\TellDontAsk\Domain\OrderStatus;
 use Archel\TellDontAsk\Domain\Product;
 use Archel\TellDontAsk\UseCase\OrderCreationUseCase;
 use Archel\TellDontAsk\UseCase\SellItemRequest;
@@ -42,19 +41,10 @@ class OrderCreationUseCaseTest extends TestCase
     public function setUp(): void
     {
         $this->orderRepository = new TestOrderRepository();
-        $this->food = new Category();
-        $this->food->setName('food');
-        $this->food->setTaxPercentage(10.0);
+        $this->food = new Category('food', 10.0);
 
-        $product1 = new Product();
-        $product1->setName('salad');
-        $product1->setPrice(3.56);
-        $product1->setCategory($this->food);
-
-        $product2 = new Product();
-        $product2->setName('tomato');
-        $product2->setPrice(4.65);
-        $product2->setCategory($this->food);
+        $product1 = new Product('salad', 3.56, $this->food);
+        $product2 = new Product('tomato', 4.65, $this->food);
 
         $products = [$product1, $product2];
 
