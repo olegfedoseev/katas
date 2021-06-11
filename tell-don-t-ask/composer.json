@@ -1,7 +1,6 @@
 {
     "name": "archel/tell-dont-ask",
     "description": "The kata https://github.com/gabrieletondi/tell-dont-ask-kata in php",
-    "type": "code kata",
     "license": "MIT",
     "authors": [
         {
@@ -10,10 +9,10 @@
         }
     ],
     "require": {
-        "php": "^7.1.0"
+        "php": "^7.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.2"
+        "phpunit/phpunit": "^8"
     },
     "autoload": {
       "psr-4": {"Archel\\TellDontAsk\\": "src/"}

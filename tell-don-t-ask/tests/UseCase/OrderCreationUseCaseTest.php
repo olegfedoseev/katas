@@ -39,7 +39,7 @@ class OrderCreationUseCaseTest extends TestCase
      */
     private $useCase;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->orderRepository = new TestOrderRepository();
         $this->food = new Category();

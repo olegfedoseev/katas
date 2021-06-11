@@ -30,7 +30,7 @@ class OrderApprovalUseCaseTest extends TestCase
     /**
      * OrderApprovalUseCaseTest constructor.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->orderRepository = new TestOrderRepository();
         $this->useCase = new OrderApprovalUseCase($this->orderRepository);
