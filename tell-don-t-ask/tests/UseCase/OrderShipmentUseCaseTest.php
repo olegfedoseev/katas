@@ -10,7 +10,7 @@ use Archel\TellDontAsk\UseCase\OrderCannotBeShippedException;
 use Archel\TellDontAsk\UseCase\OrderCannotBeShippedTwiceException;
 use Archel\TellDontAsk\UseCase\OrderShipmentRequest;
 use Archel\TellDontAsk\UseCase\OrderShipmentUseCase;
-use Archel\TellDontAsk\UseCase\ShippedOrdersCannotBeChangedException;
+use Archel\TellDontAsk\Domain\Exceptions\ShippedOrdersCannotBeChangedException;
 use Archel\TellDontAskTest\Doubles\TestOrderRepository;
 use Archel\TellDontAskTest\Doubles\TestShipmentService;
 use PHPUnit\Framework\TestCase;

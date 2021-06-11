@@ -1,6 +1,6 @@
 <?php
 
-namespace Archel\TellDontAsk\UseCase;
+namespace Archel\TellDontAsk\Domain\Exceptions;
 
 /**
  * Class RejectedOrderCannotBeApprovedException

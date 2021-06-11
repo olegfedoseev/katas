@@ -2,6 +2,10 @@
 
 namespace Archel\TellDontAsk\Domain;
 
+use Archel\TellDontAsk\Domain\Exceptions\ApprovedOrderCannotBeRejectedException;
+use Archel\TellDontAsk\Domain\Exceptions\RejectedOrderCannotBeApprovedException;
+use Archel\TellDontAsk\Domain\Exceptions\ShippedOrdersCannotBeChangedException;
+
 /**
  * Class Order
  * @package Archel\TellDontAsk\Domain
@@ -140,5 +144,39 @@ class Order
     public function setId(int $id) : void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @throws ShippedOrdersCannotBeChangedException
+     * @throws RejectedOrderCannotBeApprovedException
+     */
+    public function approve(): void
+    {
+        if ($this->status->isShipped()) {
+            throw new ShippedOrdersCannotBeChangedException();
+        }
+
+        if ($this->status->isRejected()) {
+            throw new RejectedOrderCannotBeApprovedException();
+        }
+
+        $this->setStatus(OrderStatus::approved());
+    }
+
+    /**
+     * @throws ApprovedOrderCannotBeRejectedException
+     * @throws ShippedOrdersCannotBeChangedException
+     */
+    public function reject(): void
+    {
+        if ($this->status->isShipped()) {
+            throw new ShippedOrdersCannotBeChangedException();
+        }
+
+        if ($this->status->isApproved()) {
+            throw new ApprovedOrderCannotBeRejectedException();
+        }
+
+        $this->setStatus(OrderStatus::rejected());
     }
 }

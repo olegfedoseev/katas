@@ -6,8 +6,8 @@ use Archel\TellDontAsk\Domain\Order;
 use Archel\TellDontAsk\Domain\OrderStatus;
 use Archel\TellDontAsk\UseCase\OrderApprovalRequest;
 use Archel\TellDontAsk\UseCase\OrderApprovalUseCase;
-use Archel\TellDontAsk\UseCase\RejectedOrderCannotBeApprovedException;
-use Archel\TellDontAsk\UseCase\ShippedOrdersCannotBeChangedException;
+use Archel\TellDontAsk\Domain\Exceptions\RejectedOrderCannotBeApprovedException;
+use Archel\TellDontAsk\Domain\Exceptions\ShippedOrdersCannotBeChangedException;
 use Archel\TellDontAskTest\Doubles\TestOrderRepository;
 use PHPUnit\Framework\TestCase;
 

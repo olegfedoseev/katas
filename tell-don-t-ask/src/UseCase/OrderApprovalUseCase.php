@@ -2,7 +2,6 @@
 
 namespace Archel\TellDontAsk\UseCase;
 
-use Archel\TellDontAsk\Domain\OrderStatus;
 use Archel\TellDontAsk\Repository\OrderRepository;
 
 /**
@@ -11,15 +10,8 @@ use Archel\TellDontAsk\Repository\OrderRepository;
  */
 class OrderApprovalUseCase
 {
-    /**
-     * @var OrderRepository
-     */
-    private $orderRepository;
+    private OrderRepository $orderRepository;
 
-    /**
-     * OrderApprovalUseCase constructor.
-     * @param OrderRepository $orderRepository
-     */
     public function __construct(OrderRepository $orderRepository)
     {
         $this->orderRepository = $orderRepository;
@@ -29,19 +21,12 @@ class OrderApprovalUseCase
     {
         $order = $this->orderRepository->getById($request->getOrderId());
 
-        if ($order->getStatus()->isShipped()) {
-            throw new ShippedOrdersCannotBeChangedException();
+        if ($request->isApproved()) {
+            $order->approve();
+        } else {
+            $order->reject();
         }
 
-        if ($request->isApproved() && $order->getStatus()->isRejected()) {
-            throw new RejectedOrderCannotBeApprovedException();
-        }
-
-        if (!$request->isApproved() && $order->getStatus()->isApproved()) {
-            throw new ApprovedOrderCannotBeRejectedException();
-        }
-
-        $order->setStatus($request->isApproved() ? OrderStatus::approved() : OrderStatus::rejected());
         $this->orderRepository->save($order);
     }
 }
