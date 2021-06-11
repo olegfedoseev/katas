@@ -29,15 +29,15 @@ class OrderApprovalUseCase
     {
         $order = $this->orderRepository->getById($request->getOrderId());
 
-        if ($order->getStatus()->getType() === OrderStatus::SHIPPED) {
+        if ($order->getStatus()->isShipped()) {
             throw new ShippedOrdersCannotBeChangedException();
         }
 
-        if ($request->isApproved() && $order->getStatus()->getType() === OrderStatus::REJECTED) {
+        if ($request->isApproved() && $order->getStatus()->isRejected()) {
             throw new RejectedOrderCannotBeApprovedException();
         }
 
-        if (!$request->isApproved() && $order->getStatus()->getType() === OrderStatus::APPROVED) {
+        if (!$request->isApproved() && $order->getStatus()->isApproved()) {
             throw new ApprovedOrderCannotBeRejectedException();
         }
 

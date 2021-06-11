@@ -54,7 +54,7 @@ class OrderApprovalUseCaseTest extends TestCase
 
         $savedOrder = $this->orderRepository->getSavedOrder();
 
-        $this->assertEquals(OrderStatus::APPROVED, $savedOrder->getStatus()->getType());
+        $this->assertTrue($savedOrder->getStatus()->isApproved());
     }
 
     /**
@@ -75,7 +75,7 @@ class OrderApprovalUseCaseTest extends TestCase
 
         $savedOrder = $this->orderRepository->getSavedOrder();
 
-        $this->assertEquals(OrderStatus::REJECTED, $savedOrder->getStatus()->getType());
+        $this->assertTrue($savedOrder->getStatus()->isRejected());
     }
 
     /**

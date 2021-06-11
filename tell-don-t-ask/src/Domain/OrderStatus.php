@@ -11,12 +11,12 @@ class OrderStatus
     /**
      * @var string
      */
-    private $type;
+    private string $type;
 
-    const APPROVED = 'APPROVED';
-    const REJECTED = 'REJECTED';
-    const SHIPPED = 'SHIPPED';
-    const CREATED = 'CREATED';
+    private const APPROVED = 'APPROVED';
+    private const REJECTED = 'REJECTED';
+    private const SHIPPED = 'SHIPPED';
+    private const CREATED = 'CREATED';
 
     /**
      * OrderStatus constructor.
@@ -59,11 +59,23 @@ class OrderStatus
         return new static(self::CREATED);
     }
 
-    /**
-     * @return string
-     */
-    public function getType() : string
+    public function isApproved() : bool
     {
-        return $this->type;
+        return $this->type === self::APPROVED;
+    }
+
+    public function isRejected() : bool
+    {
+        return $this->type === self::REJECTED;
+    }
+
+    public function isShipped() : bool
+    {
+        return $this->type === self::SHIPPED;
+    }
+
+    public function isCreated() : bool
+    {
+        return $this->type === self::CREATED;
     }
 }

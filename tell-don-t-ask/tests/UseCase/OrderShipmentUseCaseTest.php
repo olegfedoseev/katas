@@ -58,7 +58,7 @@ class OrderShipmentUseCaseTest extends TestCase
 
         $this->useCase->run($request);
 
-        $this->assertEquals(OrderStatus::SHIPPED, $this->orderRepository->getSavedOrder()->getStatus()->getType());
+        $this->assertTrue($this->orderRepository->getSavedOrder()->getStatus()->isShipped());
         $this->assertEquals($this->shipmentService->getShippedOrder()->getId(), $initialOrder->getId());
     }
 

@@ -82,7 +82,7 @@ class OrderCreationUseCaseTest extends TestCase
 
         $insertedOrder = $this->orderRepository->getSavedOrder();
         $products = $insertedOrder->getItems();
-        $this->assertEquals(OrderStatus::CREATED, $insertedOrder->getStatus()->getType());
+        $this->assertTrue($insertedOrder->getStatus()->isCreated());
         $this->assertEquals($insertedOrder->getTotal(), 23.20);
         $this->assertEquals($insertedOrder->getTax(), 2.13);
         $this->assertEquals("EUR", $insertedOrder->getCurrency());
