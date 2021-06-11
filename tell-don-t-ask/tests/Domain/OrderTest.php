@@ -5,6 +5,8 @@ namespace Archel\TellDontAskTest\Domain;
 
 
 use Archel\TellDontAsk\Domain\Exceptions\ApprovedOrderCannotBeRejectedException;
+use Archel\TellDontAsk\Domain\Exceptions\OrderCannotBeShippedException;
+use Archel\TellDontAsk\Domain\Exceptions\OrderCannotBeShippedTwiceException;
 use Archel\TellDontAsk\Domain\Exceptions\RejectedOrderCannotBeApprovedException;
 use Archel\TellDontAsk\Domain\Exceptions\ShippedOrdersCannotBeChangedException;
 use Archel\TellDontAsk\Domain\Order;
@@ -65,5 +67,40 @@ class OrderTest extends TestCase
         $order->reject();
 
         $this->assertTrue($order->getStatus()->isRejected());
+    }
+
+    public function testCouldNotShipRejectedOrders(): void
+    {
+        $this->expectExceptionObject(new OrderCannotBeShippedException());
+
+        $order = new Order();
+        $order->setStatus(OrderStatus::rejected());
+        $order->isReadyToBeShipped();
+    }
+
+    public function testCouldNotShipNotApprovedOrders(): void
+    {
+        $this->expectExceptionObject(new OrderCannotBeShippedException());
+
+        $order = new Order();
+        $order->setStatus(OrderStatus::created());
+        $order->isReadyToBeShipped();
+    }
+
+    public function testCouldNotShipAlreadyShippedOrders(): void
+    {
+        $this->expectExceptionObject(new OrderCannotBeShippedTwiceException());
+
+        $order = new Order();
+        $order->setStatus(OrderStatus::shipped());
+        $order->isReadyToBeShipped();
+    }
+
+    public function testCouldShipApprovedOrders(): void
+    {
+        $order = new Order();
+        $order->setStatus(OrderStatus::approved());
+
+        $this->assertTrue($order->isReadyToBeShipped());
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Archel\TellDontAsk\UseCase;
 
+use Archel\TellDontAsk\Domain\Exceptions\OrderCannotBeShippedException;
+use Archel\TellDontAsk\Domain\Exceptions\OrderCannotBeShippedTwiceException;
 use Archel\TellDontAsk\Domain\OrderStatus;
 use Archel\TellDontAsk\Repository\OrderRepository;
 use Archel\TellDontAsk\Service\ShipmentService;
@@ -12,15 +14,8 @@ use Archel\TellDontAsk\Service\ShipmentService;
  */
 class OrderShipmentUseCase
 {
-    /**
-     * @var OrderRepository
-     */
-    private $orderRepository;
-
-    /**
-     * @var ShipmentService
-     */
-    private $shipmentService;
+    private OrderRepository $orderRepository;
+    private ShipmentService $shipmentService;
 
     public function __construct(OrderRepository $orderRepository, ShipmentService $shipmentService)
     {
@@ -37,17 +32,11 @@ class OrderShipmentUseCase
     {
         $order = $this->orderRepository->getById($request->getOrderId());
 
-        if ($order->getStatus()->isCreated() ||$order->getStatus()->isRejected()) {
-            throw new OrderCannotBeShippedException();
+        if ($order->isReadyToBeShipped()) {
+            $this->shipmentService->ship($order);
+            $order->shipped();
+
+            $this->orderRepository->save($order);
         }
-
-        if ($order->getStatus()->isShipped()) {
-            throw new OrderCannotBeShippedTwiceException();
-        }
-
-        $this->shipmentService->ship($order);
-        $order->setStatus(OrderStatus::shipped());
-
-        $this->orderRepository->save($order);
     }
 }

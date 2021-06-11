@@ -5,6 +5,8 @@ namespace Archel\TellDontAsk\Domain;
 use Archel\TellDontAsk\Domain\Exceptions\ApprovedOrderCannotBeRejectedException;
 use Archel\TellDontAsk\Domain\Exceptions\RejectedOrderCannotBeApprovedException;
 use Archel\TellDontAsk\Domain\Exceptions\ShippedOrdersCannotBeChangedException;
+use Archel\TellDontAsk\Domain\Exceptions\OrderCannotBeShippedException;
+use Archel\TellDontAsk\Domain\Exceptions\OrderCannotBeShippedTwiceException;
 
 /**
  * Class Order
@@ -178,5 +180,33 @@ class Order
         }
 
         $this->setStatus(OrderStatus::rejected());
+    }
+
+    /**
+     * @throws OrderCannotBeShippedException
+     * @throws OrderCannotBeShippedTwiceException
+     */
+    public function isReadyToBeShipped(): bool
+    {
+        if ($this->status->isCreated() || $this->status->isRejected()) {
+            throw new OrderCannotBeShippedException();
+        }
+
+        if ($this->status->isShipped()) {
+            throw new OrderCannotBeShippedTwiceException();
+        }
+
+        return true;
+    }
+
+    /**
+     * @throws OrderCannotBeShippedException
+     * @throws OrderCannotBeShippedTwiceException
+     */
+    public function shipped(): void
+    {
+        if ($this->isReadyToBeShipped()) {
+            $this->setStatus(OrderStatus::shipped());
+        }
     }
 }
