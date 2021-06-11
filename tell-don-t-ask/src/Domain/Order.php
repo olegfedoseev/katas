@@ -14,50 +14,31 @@ use Archel\TellDontAsk\Domain\Exceptions\OrderCannotBeShippedTwiceException;
  */
 class Order
 {
+    private string $currency;
     /**
-     * @var float
+     * @var array<OrderItem>
      */
-    private $total;
+    private array $items = [];
+    private OrderStatus $status;
+    private int $id;
 
-    /**
-     * @var string
-     */
-    private $currency;
-
-    /**
-     * @var array
-     */
-    private $items = [];
-
-    /**
-     * @var float
-     */
-    private $tax;
-
-    /**
-     * @var OrderStatus
-     */
-    private $status;
-
-    /**
-     * @var int
-     */
-    private $id;
+    public function __construct(string $currency = 'EUR')
+    {
+        $this->setStatus(OrderStatus::created());
+        $this->currency = $currency;
+    }
 
     /**
      * @return float
      */
     public function getTotal() : float
     {
-        return $this->total;
-    }
+        $total = 0;
+        foreach ($this->items as $item) {
+            $total += $item->getTaxedAmount();
+        }
 
-    /**
-     * @param float $total
-     */
-    public function setTotal(float $total)
-    {
-        $this->total = $total;
+        return $total;
     }
 
     /**
@@ -69,27 +50,11 @@ class Order
     }
 
     /**
-     * @param string $currency
-     */
-    public function setCurrency(string $currency) : void
-    {
-        $this->currency = $currency;
-    }
-
-    /**
      * @return array
      */
     public function getItems() : array
     {
         return $this->items;
-    }
-
-    /**
-     * @param OrderItem[] ...$items
-     */
-    public function setItems(OrderItem... $items) : void
-    {
-        $this->items = $items;
     }
 
     /**
@@ -105,15 +70,12 @@ class Order
      */
     public function getTax() : float
     {
-        return $this->tax;
-    }
+        $tax = 0;
+        foreach ($this->items as $item) {
+            $tax += $item->getTax();
+        }
 
-    /**
-     * @param float $tax
-     */
-    public function setTax(float $tax) : void
-    {
-        $this->tax = $tax;
+        return $tax;
     }
 
     /**

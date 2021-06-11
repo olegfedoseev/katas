@@ -3,6 +3,7 @@
 namespace Archel\TellDontAsk\Repository;
 
 use Archel\TellDontAsk\Domain\Product;
+use Archel\TellDontAsk\UseCase\UnknownProductException;
 
 /**
  * Interface ProductCatalog
@@ -10,5 +11,11 @@ use Archel\TellDontAsk\Domain\Product;
  */
 interface ProductCatalog
 {
-    public function getByName(string $name) : ?Product;
+    /**
+     * @param string $name
+     * @return Product
+     *
+     * @throws UnknownProductException if no product found
+     */
+    public function getByName(string $name) : Product;
 }

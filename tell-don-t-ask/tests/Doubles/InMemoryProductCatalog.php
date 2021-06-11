@@ -4,6 +4,7 @@ namespace Archel\TellDontAskTest\Doubles;
 
 use Archel\TellDontAsk\Domain\Product;
 use Archel\TellDontAsk\Repository\ProductCatalog;
+use Archel\TellDontAsk\UseCase\UnknownProductException;
 
 /**
  * Class InMemoryProductCatalog
@@ -27,14 +28,20 @@ class InMemoryProductCatalog implements ProductCatalog
 
     /**
      * @param string $name
-     * @return Product|null
+     * @return Product
+     *
+     * @throws UnknownProductException if no product found
      */
-    public function getByName(string $name) : ?Product
+    public function getByName(string $name) : Product
     {
         $product = array_filter($this->products, function ($product) use ($name) {
             return $product->getName() === $name;
         });
 
-        return !empty($product) ? current($product) : null;
+        if (empty($product)) {
+            throw new UnknownProductException();
+        }
+
+        return current($product);
     }
 }

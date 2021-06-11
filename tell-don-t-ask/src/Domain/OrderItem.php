@@ -8,25 +8,14 @@ namespace Archel\TellDontAsk\Domain;
  */
 class OrderItem
 {
-    /**
-     * @var Product
-     */
-    private $product;
+    private Product $product;
+    private int $quantity;
 
-    /**
-     * @var int
-     */
-    private $quantity;
-
-    /**
-     * @var float
-     */
-    private $taxedAmount;
-
-    /**
-     * @var float
-     */
-    private $tax;
+    public function __construct(Product $product, int $quantity)
+    {
+        $this->setProduct($product);
+        $this->setQuantity($quantity);
+    }
 
     /**
      * @return Product
@@ -65,15 +54,8 @@ class OrderItem
      */
     public function getTaxedAmount() : float
     {
-        return $this->taxedAmount;
-    }
-
-    /**
-     * @param float $taxedAmount
-     */
-    public function setTaxedAmount(float $taxedAmount) : void
-    {
-        $this->taxedAmount = $taxedAmount;
+        $unitaryTaxedAmount = round($this->product->getPrice() + $this->product->getUnitaryTax(), 2);
+        return round($unitaryTaxedAmount * $this->quantity, 2);
     }
 
     /**
@@ -81,14 +63,6 @@ class OrderItem
      */
     public function getTax() : float
     {
-        return $this->tax;
-    }
-
-    /**
-     * @param float $tax
-     */
-    public function setTax(float $tax) : void
-    {
-        $this->tax = $tax;
+        return round($this->product->getUnitaryTax() * $this->quantity, 2);
     }
 }
