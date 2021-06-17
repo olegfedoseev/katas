@@ -75,4 +75,55 @@ class LightsTest extends TestCase
             new Coordinate(...$bottomRight)
         );
     }
+
+    public function testShouldAllowToToggleLights(): void
+    {
+        /**
+         * 1110
+         * 1110
+         * 1110
+         * 0000
+         */
+        $this->lights->turnOn(new Coordinate(0,0), new Coordinate(2,2));
+
+        /**
+         * After turning off we expect:
+         * 1110
+         * 1000
+         * 1000
+         * 0000
+         */
+        $this->lights->turnOff(new Coordinate(1,1), new Coordinate(3,3));
+
+        /**
+         * After toggle we expect:
+         * 1110
+         * 0111
+         * 1000
+         * 0000
+         */
+        $this->lights->toggle(new Coordinate(0,1), new Coordinate(3,1));
+
+        $this->assertEquals(7, $this->lights->howManyTurnedOn());
+    }
+
+    /**
+     * @testWith [[-1,0], [2,2]]
+     *           [[0,-1], [2,2]]
+     *           [[0,0], [-1,2]]
+     *           [[0,0], [2,-1]]
+     *           [[1010,0], [2,2]]
+     *           [[0,1010], [2,2]]
+     *           [[0,0], [1010,2]]
+     *           [[0,0], [2,1010]]
+     */
+    public function testShouldNotAllowToToggleLightsOffOutsideOfBounds(array $topLeft, array $bottomRight): void
+    {
+        $this->expectExceptionObject(new OutOfBoundsException());
+
+        $this->lights->toggle(
+            new Coordinate(...$topLeft),
+            new Coordinate(...$bottomRight)
+        );
+    }
 }

@@ -68,6 +68,23 @@ class Lights
      * @param Coordinate $bottomRight
      * @throws OutOfBoundsException
      */
+    public function toggle(Coordinate $topLeft, Coordinate $bottomRight): void
+    {
+        $this->checkForOutOfBounds($topLeft, $bottomRight);
+
+        for ($x = $topLeft->getX(); $x <= $bottomRight->getX(); $x++) {
+            for ($y = $topLeft->getY(); $y <= $bottomRight->getY(); $y++) {
+                $oldValue = $this->light[$x][$y] ?? false;
+                $this->light[$x][$y] = !$oldValue;
+            }
+        }
+    }
+
+    /**
+     * @param Coordinate $topLeft
+     * @param Coordinate $bottomRight
+     * @throws OutOfBoundsException
+     */
     private function checkForOutOfBounds(Coordinate $topLeft, Coordinate $bottomRight): void
     {
         if ($topLeft->getX() > $this->width || $topLeft->getY() > $this->height) {
