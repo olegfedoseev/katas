@@ -38,13 +38,7 @@ class Lights
      */
     public function turnOn(Coordinate $topLeft, Coordinate $bottomRight): void
     {
-        $this->checkForOutOfBounds($topLeft, $bottomRight);
-
-        for ($x = $topLeft->getX(); $x <= $bottomRight->getX(); $x++) {
-            for ($y = $topLeft->getY(); $y <= $bottomRight->getY(); $y++) {
-                $this->light[$x][$y] = true;
-            }
-        }
+        $this->setValue($topLeft, $bottomRight, fn() => true);
     }
 
     /**
@@ -54,13 +48,7 @@ class Lights
      */
     public function turnOff(Coordinate $topLeft, Coordinate $bottomRight): void
     {
-        $this->checkForOutOfBounds($topLeft, $bottomRight);
-
-        for ($x = $topLeft->getX(); $x <= $bottomRight->getX(); $x++) {
-            for ($y = $topLeft->getY(); $y <= $bottomRight->getY(); $y++) {
-                $this->light[$x][$y] = false;
-            }
-        }
+        $this->setValue($topLeft, $bottomRight, fn() => false);
     }
 
     /**
@@ -70,12 +58,21 @@ class Lights
      */
     public function toggle(Coordinate $topLeft, Coordinate $bottomRight): void
     {
+        $this->setValue($topLeft, $bottomRight, fn(bool $value) => !$value);
+    }
+
+    /**
+     * @param Coordinate $topLeft
+     * @param Coordinate $bottomRight
+     * @param callable $newValue callable that receives old value as argument
+     */
+    private function setValue(Coordinate $topLeft, Coordinate $bottomRight, callable $newValue): void
+    {
         $this->checkForOutOfBounds($topLeft, $bottomRight);
 
         for ($x = $topLeft->getX(); $x <= $bottomRight->getX(); $x++) {
             for ($y = $topLeft->getY(); $y <= $bottomRight->getY(); $y++) {
-                $oldValue = $this->light[$x][$y] ?? false;
-                $this->light[$x][$y] = !$oldValue;
+                $this->light[$x][$y] = $newValue($this->light[$y][$x] ?? false);
             }
         }
     }
