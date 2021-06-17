@@ -9,20 +9,23 @@ use PHPUnit\Framework\TestCase;
 
 class LightsTest extends TestCase
 {
+    private Lights $lights;
+
+    protected function setUp(): void
+    {
+        $this->lights = new Lights(1000, 1000);
+    }
+
     public function testShouldStartWithLightsOff(): void
     {
-        $lights = new Lights(1000, 1000);
-
-        $this->assertEquals(0, $lights->howManyTurnedOn());
+        $this->assertEquals(0, $this->lights->howManyTurnedOn());
     }
 
     public function testShouldAllowToTurnLightsOn(): void
     {
-        $lights = new Lights(1000, 1000);
+        $this->lights->turnOn(new Coordinate(0,0), new Coordinate(2,2));
 
-        $lights->turnOn(new Coordinate(0,0), new Coordinate(2,2));
-
-        $this->assertEquals(9, $lights->howManyTurnedOn());
+        $this->assertEquals(9, $this->lights->howManyTurnedOn());
     }
 
     /**
@@ -35,15 +38,41 @@ class LightsTest extends TestCase
      *           [[0,0], [1010,2]]
      *           [[0,0], [2,1010]]
      */
-    public function testShouldNotAllowToTurnLightsOutsideOfBounds(array $topLeft, array $bottomRight): void
+    public function testShouldNotAllowToTurnLightsOnOutsideOfBounds(array $topLeft, array $bottomRight): void
     {
         $this->expectExceptionObject(new OutOfBoundsException());
 
-        $lights = new Lights(1000, 1000);
+        $this->lights->turnOn(
+            new Coordinate(...$topLeft),
+            new Coordinate(...$bottomRight)
+        );
+    }
 
-        $lights->turnOn(
-            new Coordinate($topLeft[0], $topLeft[1]),
-            new Coordinate($bottomRight[0], $bottomRight[1])
+    public function testShouldAllowToTurnLightsOff(): void
+    {
+        $this->lights->turnOn(new Coordinate(0,0), new Coordinate(2,2));
+        $this->lights->turnOff(new Coordinate(1,1), new Coordinate(3,3));
+
+        $this->assertEquals(5, $this->lights->howManyTurnedOn());
+    }
+
+    /**
+     * @testWith [[-1,0], [2,2]]
+     *           [[0,-1], [2,2]]
+     *           [[0,0], [-1,2]]
+     *           [[0,0], [2,-1]]
+     *           [[1010,0], [2,2]]
+     *           [[0,1010], [2,2]]
+     *           [[0,0], [1010,2]]
+     *           [[0,0], [2,1010]]
+     */
+    public function testShouldNotAllowToTurnLightsOffOutsideOfBounds(array $topLeft, array $bottomRight): void
+    {
+        $this->expectExceptionObject(new OutOfBoundsException());
+
+        $this->lights->turnOff(
+            new Coordinate(...$topLeft),
+            new Coordinate(...$bottomRight)
         );
     }
 }
