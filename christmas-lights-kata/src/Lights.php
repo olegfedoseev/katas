@@ -32,23 +32,34 @@ class Lights
     }
 
     /**
-     * @param array<int> $topLeft
-     * @param array<int> $bottomRight
+     * @param Coordinate $topLeft
+     * @param Coordinate $bottomRight
+     * @throws OutOfBoundsException
      */
-    public function turnOn(array $topLeft, array $bottomRight): void
+    public function turnOn(Coordinate $topLeft, Coordinate $bottomRight): void
     {
-        if ($topLeft[0] < 0 || $topLeft[1] < 0 || $bottomRight[0] < 0 || $bottomRight[1] < 0) {
-            throw new OutOfBoundsException();
-        }
+        $this->checkForOutOfBounds($topLeft, $bottomRight);
 
-        if ($topLeft[0] > $this->width || $topLeft[1] > $this->height || $bottomRight[0] > $this->width || $bottomRight[1] > $this->height) {
-            throw new OutOfBoundsException();
-        }
-
-        for ($x = $topLeft[0]; $x <= $bottomRight[0]; $x++) {
-            for ($y = $topLeft[1]; $y <= $bottomRight[1]; $y++) {
+        for ($x = $topLeft->getX(); $x <= $bottomRight->getX(); $x++) {
+            for ($y = $topLeft->getY(); $y <= $bottomRight->getY(); $y++) {
                 $this->light[$x][$y] = true;
             }
+        }
+    }
+
+    /**
+     * @param Coordinate $topLeft
+     * @param Coordinate $bottomRight
+     * @throws OutOfBoundsException
+     */
+    private function checkForOutOfBounds(Coordinate $topLeft, Coordinate $bottomRight): void
+    {
+        if ($topLeft->getX() > $this->width || $topLeft->getY() > $this->height) {
+            throw new OutOfBoundsException();
+        }
+
+        if ($bottomRight->getX() > $this->width || $bottomRight->getY() > $this->height) {
+            throw new OutOfBoundsException();
         }
     }
 }

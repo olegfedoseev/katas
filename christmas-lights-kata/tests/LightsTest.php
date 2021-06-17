@@ -2,6 +2,7 @@
 
 namespace ChristmasTest;
 
+use Christmas\Coordinate;
 use Christmas\Lights;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,7 @@ class LightsTest extends TestCase
     {
         $lights = new Lights(1000, 1000);
 
-        $lights->turnOn([0,0], [2,2]);
+        $lights->turnOn(new Coordinate(0,0), new Coordinate(2,2));
 
         $this->assertEquals(9, $lights->howManyTurnedOn());
     }
@@ -40,6 +41,9 @@ class LightsTest extends TestCase
 
         $lights = new Lights(1000, 1000);
 
-        $lights->turnOn($topLeft, $bottomRight);
+        $lights->turnOn(
+            new Coordinate($topLeft[0], $topLeft[1]),
+            new Coordinate($bottomRight[0], $bottomRight[1])
+        );
     }
 }
