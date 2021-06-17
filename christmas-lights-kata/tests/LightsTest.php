@@ -126,4 +126,22 @@ class LightsTest extends TestCase
             new Coordinate(...$bottomRight)
         );
     }
+
+    public function testShouldFollowSantasInstructions(): void
+    {
+        // Santa's Instructions
+        $this->lights->turnOn(new Coordinate(887,9), new Coordinate(959,629));
+        $this->lights->turnOn(new Coordinate(454,398), new Coordinate(844,448));
+        $this->lights->turnOn(new Coordinate(539,243), new Coordinate(559,965));
+        $this->lights->turnOn(new Coordinate(370,819), new Coordinate(676,868));
+        $this->lights->turnOn(new Coordinate(145,40), new Coordinate(370,997));
+        $this->lights->turnOn(new Coordinate(301,3), new Coordinate(808,453));
+        $this->lights->turnOn(new Coordinate(351,678), new Coordinate(951,908));
+        $this->lights->toggle(new Coordinate(720,196), new Coordinate(897,994));
+        $this->lights->toggle(new Coordinate(831,394), new Coordinate(904,860));
+
+        // After following the instructions, how many lights are lit?
+        $this->assertEquals(554718, $this->lights->howManyTurnedOn());
+        // echo $this->lights->show();
+    }
 }

@@ -62,6 +62,25 @@ class Lights
     }
 
     /**
+     * Return current state of lights as ASCII-art
+     *
+     * @return string
+     */
+    public function show(): string
+    {
+        $result = '';
+        for ($x = 0; $x <= $this->width; $x++) {
+            $result .= PHP_EOL;
+            for ($y = 0; $y <= $this->height; $y++) {
+                $value = $this->light[$y][$x] ?? false;
+                $result .= $value ? '░' : ' ';
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @param Coordinate $topLeft
      * @param Coordinate $bottomRight
      * @param callable $newValue callable that receives old value as argument
