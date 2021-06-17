@@ -1,0 +1,25 @@
+{
+    "name": "olegfedoseev/christmas-lights-kata",
+    "description": "Solution for Christmas Lights Kata from https://kata-log.rocks/christmas-lights-kata",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Oleg Fedoseev",
+            "email": "oleg.fedoseev@me.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    },
+    "autoload": {
+        "psr-4": {"Christmas\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ChristmasTest\\": "tests/"
+        }
+    }
+}
